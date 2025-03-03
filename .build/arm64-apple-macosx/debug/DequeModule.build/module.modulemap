@@ -1,0 +1,4 @@
+module DequeModule {
+    header "/Users/francois/Documents/Dev/HyperMovie/.build/arm64-apple-macosx/debug/DequeModule.build/DequeModule-Swift.h"
+    requires objc
+}

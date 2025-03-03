@@ -1,0 +1,4 @@
+module AsyncAlgorithms {
+    header "/Users/francois/Documents/Dev/HyperMovie/.build/arm64-apple-macosx/debug/AsyncAlgorithms.build/AsyncAlgorithms-Swift.h"
+    requires objc
+}

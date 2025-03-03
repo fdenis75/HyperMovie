@@ -6,15 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0F27E2452D67C4AE00DE8BBE /* HyperMovieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0F27E2442D67C4AE00DE8BBE /* HyperMovieCore */; };
+		0F27E2472D67C4AE00DE8BBE /* HyperMovieModels in Frameworks */ = {isa = PBXBuildFile; productRef = 0F27E2462D67C4AE00DE8BBE /* HyperMovieModels */; };
+		0F27E2492D67C4AE00DE8BBE /* HyperMovieServices in Frameworks */ = {isa = PBXBuildFile; productRef = 0F27E2482D67C4AE00DE8BBE /* HyperMovieServices */; };
+		0F4090232D67C00E00D69BBC /* HyperMovieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0F4090222D67C00E00D69BBC /* HyperMovieCore */; };
+		0F4090252D67C00E00D69BBC /* HyperMovieModels in Frameworks */ = {isa = PBXBuildFile; productRef = 0F4090242D67C00E00D69BBC /* HyperMovieModels */; };
+		0F4090272D67C00E00D69BBC /* HyperMovieServices in Frameworks */ = {isa = PBXBuildFile; productRef = 0F4090262D67C00E00D69BBC /* HyperMovieServices */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
-		0FD82CFE2D5FED57006541EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0FD82CDF2D5FED55006541EC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0FD82CE62D5FED55006541EC;
-			remoteInfo = HyperMovie;
-		};
-		0FD82D082D5FED57006541EC /* PBXContainerItemProxy */ = {
+		0FD82D632D5FF69B006541EC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0FD82CDF2D5FED55006541EC /* Project object */;
 			proxyType = 1;
@@ -25,8 +27,7 @@
 
 /* Begin PBXFileReference section */
 		0FD82CE72D5FED55006541EC /* HyperMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HyperMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0FD82CFD2D5FED57006541EC /* HyperMovieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HyperMovieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0FD82D072D5FED57006541EC /* HyperMovieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HyperMovieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FD82D5F2D5FF69A006541EC /* HyperMovieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HyperMovieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,6 +46,11 @@
 			path = HyperMovieUITests;
 			sourceTree = "<group>";
 		};
+		0FD82D602D5FF69B006541EC /* HyperMovieTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HyperMovieTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,17 +58,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F27E2472D67C4AE00DE8BBE /* HyperMovieModels in Frameworks */,
+				0F4090252D67C00E00D69BBC /* HyperMovieModels in Frameworks */,
+				0F27E2492D67C4AE00DE8BBE /* HyperMovieServices in Frameworks */,
+				0F4090232D67C00E00D69BBC /* HyperMovieCore in Frameworks */,
+				0F4090272D67C00E00D69BBC /* HyperMovieServices in Frameworks */,
+				0F27E2452D67C4AE00DE8BBE /* HyperMovieCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0FD82CFA2D5FED57006541EC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FD82D042D5FED57006541EC /* Frameworks */ = {
+		0FD82D5C2D5FF69A006541EC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,12 +77,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F084D482D626DE900FDA91A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0FD82CDE2D5FED55006541EC = {
 			isa = PBXGroup;
 			children = (
 				0FD82CE92D5FED55006541EC /* HyperMovie */,
 				0FD82D002D5FED57006541EC /* HyperMovieTests */,
 				0FD82D0A2D5FED57006541EC /* HyperMovieUITests */,
+				0FD82D602D5FF69B006541EC /* HyperMovieTests */,
+				0F084D482D626DE900FDA91A /* Frameworks */,
 				0FD82CE82D5FED55006541EC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,8 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				0FD82CE72D5FED55006541EC /* HyperMovie.app */,
-				0FD82CFD2D5FED57006541EC /* HyperMovieTests.xctest */,
-				0FD82D072D5FED57006541EC /* HyperMovieUITests.xctest */,
+				0FD82D5F2D5FF69A006541EC /* HyperMovieTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,56 +125,39 @@
 			);
 			name = HyperMovie;
 			packageProductDependencies = (
+				0F4090222D67C00E00D69BBC /* HyperMovieCore */,
+				0F4090242D67C00E00D69BBC /* HyperMovieModels */,
+				0F4090262D67C00E00D69BBC /* HyperMovieServices */,
+				0F27E2442D67C4AE00DE8BBE /* HyperMovieCore */,
+				0F27E2462D67C4AE00DE8BBE /* HyperMovieModels */,
+				0F27E2482D67C4AE00DE8BBE /* HyperMovieServices */,
 			);
 			productName = HyperMovie;
 			productReference = 0FD82CE72D5FED55006541EC /* HyperMovie.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0FD82CFC2D5FED57006541EC /* HyperMovieTests */ = {
+		0FD82D5E2D5FF69A006541EC /* HyperMovieTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0FD82D142D5FED57006541EC /* Build configuration list for PBXNativeTarget "HyperMovieTests" */;
+			buildConfigurationList = 0FD82D652D5FF69B006541EC /* Build configuration list for PBXNativeTarget "HyperMovieTests" */;
 			buildPhases = (
-				0FD82CF92D5FED57006541EC /* Sources */,
-				0FD82CFA2D5FED57006541EC /* Frameworks */,
-				0FD82CFB2D5FED57006541EC /* Resources */,
+				0FD82D5B2D5FF69A006541EC /* Sources */,
+				0FD82D5C2D5FF69A006541EC /* Frameworks */,
+				0FD82D5D2D5FF69A006541EC /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0FD82CFF2D5FED57006541EC /* PBXTargetDependency */,
+				0FD82D642D5FF69B006541EC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				0FD82D002D5FED57006541EC /* HyperMovieTests */,
+				0FD82D602D5FF69B006541EC /* HyperMovieTests */,
 			);
 			name = HyperMovieTests;
 			packageProductDependencies = (
 			);
 			productName = HyperMovieTests;
-			productReference = 0FD82CFD2D5FED57006541EC /* HyperMovieTests.xctest */;
+			productReference = 0FD82D5F2D5FF69A006541EC /* HyperMovieTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0FD82D062D5FED57006541EC /* HyperMovieUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0FD82D172D5FED57006541EC /* Build configuration list for PBXNativeTarget "HyperMovieUITests" */;
-			buildPhases = (
-				0FD82D032D5FED57006541EC /* Sources */,
-				0FD82D042D5FED57006541EC /* Frameworks */,
-				0FD82D052D5FED57006541EC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0FD82D092D5FED57006541EC /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				0FD82D0A2D5FED57006541EC /* HyperMovieUITests */,
-			);
-			name = HyperMovieUITests;
-			packageProductDependencies = (
-			);
-			productName = HyperMovieUITests;
-			productReference = 0FD82D072D5FED57006541EC /* HyperMovieUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -176,11 +172,7 @@
 					0FD82CE62D5FED55006541EC = {
 						CreatedOnToolsVersion = 16.2;
 					};
-					0FD82CFC2D5FED57006541EC = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 0FD82CE62D5FED55006541EC;
-					};
-					0FD82D062D5FED57006541EC = {
+					0FD82D5E2D5FF69A006541EC = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 0FD82CE62D5FED55006541EC;
 					};
@@ -195,14 +187,16 @@
 			);
 			mainGroup = 0FD82CDE2D5FED55006541EC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0F27E2432D67C4AE00DE8BBE /* XCLocalSwiftPackageReference "Package" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0FD82CE82D5FED55006541EC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				0FD82CE62D5FED55006541EC /* HyperMovie */,
-				0FD82CFC2D5FED57006541EC /* HyperMovieTests */,
-				0FD82D062D5FED57006541EC /* HyperMovieUITests */,
+				0FD82D5E2D5FF69A006541EC /* HyperMovieTests */,
 			);
 		};
 /* End PBXProject section */
@@ -215,14 +209,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0FD82CFB2D5FED57006541EC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FD82D052D5FED57006541EC /* Resources */ = {
+		0FD82D5D2D5FF69A006541EC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,14 +226,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0FD82CF92D5FED57006541EC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FD82D032D5FED57006541EC /* Sources */ = {
+		0FD82D5B2D5FF69A006541EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,15 +236,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0FD82CFF2D5FED57006541EC /* PBXTargetDependency */ = {
+		0FD82D642D5FF69B006541EC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0FD82CE62D5FED55006541EC /* HyperMovie */;
-			targetProxy = 0FD82CFE2D5FED57006541EC /* PBXContainerItemProxy */;
-		};
-		0FD82D092D5FED57006541EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0FD82CE62D5FED55006541EC /* HyperMovie */;
-			targetProxy = 0FD82D082D5FED57006541EC /* PBXContainerItemProxy */;
+			targetProxy = 0FD82D632D5FF69B006541EC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -389,13 +364,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HyperMovie/HyperMovie.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HyperMovie/Preview Content\"";
 				DEVELOPMENT_TEAM = 99D83P27R3;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -414,10 +391,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Debug;
@@ -428,13 +405,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HyperMovie/HyperMovie.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HyperMovie/Preview Content\"";
 				DEVELOPMENT_TEAM = 99D83P27R3;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -453,15 +432,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Release;
 		};
-		0FD82D152D5FED57006541EC /* Debug */ = {
+		0FD82D662D5FF69B006541EC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -469,22 +448,18 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99D83P27R3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovieTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HyperMovie.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HyperMovie";
-				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Debug;
 		};
-		0FD82D162D5FED57006541EC /* Release */ = {
+		0FD82D672D5FF69B006541EC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -492,62 +467,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99D83P27R3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovieTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HyperMovie.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HyperMovie";
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Release;
-		};
-		0FD82D182D5FED57006541EC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 99D83P27R3;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovieUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = HyperMovie;
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Debug;
-		};
-		0FD82D192D5FED57006541EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 99D83P27R3;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fd.HyperMovieUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = HyperMovie;
-				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Release;
 		};
@@ -572,25 +499,50 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0FD82D142D5FED57006541EC /* Build configuration list for PBXNativeTarget "HyperMovieTests" */ = {
+		0FD82D652D5FF69B006541EC /* Build configuration list for PBXNativeTarget "HyperMovieTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0FD82D152D5FED57006541EC /* Debug */,
-				0FD82D162D5FED57006541EC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0FD82D172D5FED57006541EC /* Build configuration list for PBXNativeTarget "HyperMovieUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0FD82D182D5FED57006541EC /* Debug */,
-				0FD82D192D5FED57006541EC /* Release */,
+				0FD82D662D5FF69B006541EC /* Debug */,
+				0FD82D672D5FF69B006541EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		0F27E2432D67C4AE00DE8BBE /* XCLocalSwiftPackageReference "Package" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Package;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0F27E2442D67C4AE00DE8BBE /* HyperMovieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieCore;
+		};
+		0F27E2462D67C4AE00DE8BBE /* HyperMovieModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieModels;
+		};
+		0F27E2482D67C4AE00DE8BBE /* HyperMovieServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieServices;
+		};
+		0F4090222D67C00E00D69BBC /* HyperMovieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieCore;
+		};
+		0F4090242D67C00E00D69BBC /* HyperMovieModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieModels;
+		};
+		0F4090262D67C00E00D69BBC /* HyperMovieServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HyperMovieServices;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0FD82CDF2D5FED55006541EC /* Project object */;
 }

@@ -1,0 +1,4 @@
+module InternalCollectionsUtilities {
+    header "/Users/francois/Documents/Dev/HyperMovie/.build/arm64-apple-macosx/debug/InternalCollectionsUtilities.build/InternalCollectionsUtilities-Swift.h"
+    requires objc
+}

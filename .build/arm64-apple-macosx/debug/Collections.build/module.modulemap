@@ -1,0 +1,4 @@
+module Collections {
+    header "/Users/francois/Documents/Dev/HyperMovie/.build/arm64-apple-macosx/debug/Collections.build/Collections-Swift.h"
+    requires objc
+}

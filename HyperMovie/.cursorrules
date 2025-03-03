@@ -1,0 +1,395 @@
+
+
+# HyperMovie – Technical Specification
+
+*Version: 1.0.0*  
+*Target Platform: macOS 13.0+*  
+*Language: Swift 6, SwiftUI (December 2024)*  
+*Last Updated: 2025-02-15*
+
+---
+
+## 1. Introduction
+
+**HyperMovie** is a macOS application that unifies advanced video preview and folder browsing (inspired by MovieView) with robust mosaic generation, export management, and playlist creation (inspired by MZBar). The app is built using Swift 6 and the latest SwiftUI features, with a strong emphasis on highly concurrent workflows to process video files efficiently.
+
+---
+
+## 2. Goals & Vision
+
+- **Unified Experience:** Seamlessly combine video library browsing, interactive preview generation, and mosaic creation.
+- **High Performance:** Leverage Swift’s structured concurrency to achieve maximum throughput for both mosaic and preview generation workflows.
+- **Modern UI & Architecture:** Use SwiftUI’s NavigationSplitView, NavigationStack, and custom layouts to build a responsive, accessible interface.
+- **Extensibility:** Architect the app using Domain-Driven Design principles to ensure modularity and ease of future enhancement (e.g., real-time scene detection, cloud sync).
+
+---
+
+## 3. Project Structure
+Sources/
+├── App/
+│   └── MainApp.swift                // Entry point (@main), global state, scene configuration
+├── Features/
+│   ├── Home/                        // Dashboard & Video Library UI
+│   │   ├── Views/
+│   │   └── ViewModels/              // @Observable classes with @Bindable properties
+│   ├── Editor/                      // Mosaic editing and customization UI
+│   │   ├── Views/
+│   │   └── ViewModels/
+│   └── Gallery/                     // Browsing generated mosaics and playlists
+│       ├── Views/
+│       └── ViewModels/
+├── Shared/
+│   ├── Components/                  // Reusable SwiftUI views (buttons, cards, lists)
+│   ├── Modifiers/                   // Custom ViewModifiers for styling
+│   └── Styles/                      // Custom ButtonStyle, ToggleStyle, etc.
+├── Models/
+│   └── Domain Models/               // Data models with @Observable and @Bindable properties
+├── Services/
+│   ├── Network/                     // async/await API calls (if needed)
+│   └── Persistence/                 // Swift Data, CloudKit, and local storage services
+└── Core/
+├── Extensions/                  // Useful Swift extensions
+├── Utilities/                   // Helpers (logging, error types, concurrency utilities)
+└── Constants/                   // Global constants and configuration defaults
+
+Resources/
+├── Assets.xcassets/
+├── Localizable.xcstrings
+└── Fonts/
+
+Tests/
+├── UnitTests/
+└── UITests/
+
+---
+
+## 4. Detailed Workflow Specifications
+
+### 4.1 Mosaic Generation Workflow
+
+**Objective:**  
+Generate a mosaic image from a video by extracting key thumbnails, arranging them in a calculated layout, and exporting the final image. This workflow is highly concurrent, reducing processing time for large or high-resolution videos.
+
+**Workflow Steps:**
+
+1. **Video Processing & Metadata Extraction:**
+   - **Task:** Load the video asset (AVURLAsset) and extract metadata (duration, resolution, codec, etc.).
+   - **Concurrency:** Use async/await to load asset properties concurrently. Cache immutable values (e.g., duration) to avoid repeated asynchronous calls.
+   - **Pseudocode:**
+     ```
+     async function processVideo(fileURL):
+         asset = AVURLAsset(url: fileURL)
+         duration = await asset.load(duration) // cache duration
+         metadata = extractMetadata(asset)
+         return metadata
+     ```
+
+2. **Thumbnail Extraction:**
+   - **Task:** Concurrently extract a set of thumbnails from the video.
+   - **Concurrency:** Utilize a TaskGroup to spawn tasks that extract individual frames. Limit the maximum concurrent tasks using an async semaphore if needed.
+   - **Pseudocode:**
+     ```
+     async function extractThumbnails(asset, count):
+         thumbnails = []
+         await withTaskGroup:
+             for index in 0..<count:
+                 add task: extractThumbnail(asset, time: calculateTime(index, count))
+             for each result in group:
+                 thumbnails.append(result)
+         return thumbnails
+     ```
+
+3. **Layout Calculation:**
+   - **Task:** Determine the mosaic layout (positions and sizes for each thumbnail) based on video metadata and user-defined settings.
+   - **Concurrency:** This can be computed synchronously as it is mostly CPU-bound; if the calculation is complex, it can be dispatched on a background Task.
+   - **Pseudocode:**
+     ```
+     function calculateLayout(thumbnailCount, mosaicWidth, density):
+         return layoutConfiguration
+     ```
+
+4. **Mosaic Composition:**
+   - **Task:** Create a drawing context and concurrently draw each thumbnail into its computed position.
+   - **Concurrency:** Use an actor (e.g., `ContextDrawer`) to encapsulate the drawing context. Spawn concurrent tasks to resize thumbnails and send drawing commands to the actor.
+   - **Pseudocode:**
+     ```
+     actor ContextDrawer(context):
+         method draw(image, rect):
+             context.draw(image, in: rect)
+
+     async function composeMosaic(thumbnails, layout):
+         context = createDrawingContext(mosaicSize)
+         drawer = ContextDrawer(context)
+         await withTaskGroup:
+             for each thumbnail and position in layout:
+                 add task: await drawer.draw(thumbnail, position)
+         finalImage = context.makeImage()
+         return finalImage
+     ```
+
+5. **Export & Database Update:**
+   - **Task:** Save the generated mosaic using ExportManager. Update the local database with metadata and file paths.
+   - **Concurrency:** The export task is asynchronous; progress is tracked using a structured task group.
+   - **Pseudocode:**
+     ```
+     async function exportMosaic(image, outputURL):
+         await ExportManager.saveMosaic(image, outputURL)
+     ```
+
+6. **Orchestration:**
+   - **Task:** The GenerationCoordinator orchestrates all the above steps, managing concurrency limits using TaskGroup and async semaphores.
+   - **Pseudocode:**
+     ```
+     async function generateMosaicForFile(fileURL):
+         metadata = await processVideo(fileURL)
+         thumbnails = await extractThumbnails(asset, calculateThumbnailCount(metadata.duration))
+         layout = calculateLayout(thumbnails.count, userSettings.mosaicWidth, userSettings.density)
+         mosaicImage = await composeMosaic(thumbnails, layout)
+         await exportMosaic(mosaicImage, outputURL)
+         updateDatabase(fileURL, outputURL, metadata)
+     ```
+
+**Key Concurrency Tools:**
+- **TaskGroup:** For parallel thumbnail extraction and concurrent drawing commands.
+- **AsyncSemaphore (or Actor-based counter):** To limit the number of concurrently running tasks.
+- **Actors (e.g., ContextDrawer):** To serialize access to shared resources like the graphics context.
+
+---
+
+### 4.2 Preview Generation Workflow
+
+**Objective:**  
+Generate a preview video clip from a source video by extracting key frames and composing them into a fast-playback clip. This process is designed to be highly concurrent and responsive.
+
+**Workflow Steps:**
+
+1. **Asset Loading & Duration Caching:**
+   - **Task:** Load the AVURLAsset for the video and cache its duration.
+   - **Concurrency:** Use async/await to fetch and cache the duration.
+   - **Pseudocode:**
+     ```
+     async function loadAssetWithCaching(fileURL):
+         asset = AVURLAsset(url: fileURL)
+         if durationCache exists:
+             return (asset, cachedDuration)
+         else:
+             duration = await asset.load(duration)
+             cache duration
+             return (asset, duration)
+     ```
+
+2. **Extraction Parameter Calculation:**
+   - **Task:** Compute the number of extraction points and the duration per extract based on the asset’s duration and the user’s preview duration setting.
+   - **Concurrency:** Can be computed synchronously; if complex, run on a background task.
+   - **Pseudocode:**
+     ```
+     function calculateExtractionParameters(duration, previewDuration, density):
+         extractCount = ceil(duration / 60 * (baseRate / density))
+         extractDuration = previewDuration / extractCount
+         return (extractCount, extractDuration)
+     ```
+
+3. **Preview Composition:**
+   - **Task:** Create a video composition by extracting frames at computed time points and assembling them into a continuous clip.
+   - **Concurrency:** Use a TaskGroup to concurrently extract frames and then use an AVAssetExportSession to export the preview.
+   - **Pseudocode:**
+     ```
+     async function createPreview(asset, extractParams):
+         timePoints = calculateTimePoints(extractParams.extractCount, duration)
+         frames = await withTaskGroup:
+             for each timePoint in timePoints:
+                 add task: extractFrame(asset, timePoint)
+         composition = assembleFrames(frames, speedMultiplier)
+         return composition
+     ```
+
+4. **Export & Progress Tracking:**
+   - **Task:** Export the preview composition to disk using a dedicated export session.
+   - **Concurrency:** Use a structured task group to run the export concurrently with a periodic progress updater.
+   - **Pseudocode:**
+     ```
+     async function exportPreview(composition, outputURL):
+         exportSession = createExportSession(composition, outputURL)
+         progressTask = Task { 
+             while exportSession.status is exporting:
+                 await Task.sleep(100ms)
+                 updateProgress(exportSession.progress)
+         }
+         exportTask = Task { await exportSession.export() }
+         await withTaskGroup:
+             add exportTask, add progressTask
+         return outputURL
+     ```
+
+5. **Orchestration:**
+   - **Task:** The PreviewGenerator orchestrates the entire process, ensuring that cancellation is handled gracefully and that progress is reported to the UI.
+   - **Pseudocode:**
+     ```
+     async function generatePreviewForFile(fileURL, outputDirectory, density, previewDuration):
+         (asset, duration) = await loadAssetWithCaching(fileURL)
+         extractParams = calculateExtractionParameters(duration, previewDuration, density)
+         composition = await createPreview(asset, extractParams)
+         previewURL = await exportPreview(composition, outputDirectory)
+         return previewURL
+     ```
+
+**Key Concurrency Tools:**
+- **TaskGroup:** To run frame extraction tasks concurrently.
+- **Async Sequences:** For monitoring export progress.
+- **Structured Concurrency (async/await):** To manage the overall workflow with clear cancellation and error propagation.
+
+---
+
+## 5. Design & Implementation Rules
+
+- **State Management:**  
+  Use `@Observable` for app state and business logic with `@Bindable` properties for UI binding. Inject dependencies via initialisers.
+
+- **Modern Navigation:**  
+  Use `NavigationSplitView` and `NavigationStack` with `navigationDestination()` for type-safe navigation.
+
+- **Layout System:**  
+  Use `Grid`, `ViewThatFits`, and custom layouts (via the `Layout` protocol) for responsive UI.
+
+- **Data & Performance:**  
+  Use Swift Data (`@Query`) and CloudKit for persistence; annotate UI updates with `@MainActor`. Use TaskGroups and async semaphores for concurrency.
+
+- **Accessibility & Interaction:**  
+  Every UI element includes accessibility modifiers. Animations use `.animation(value:)` and phase transitions; haptic feedback is provided where appropriate.
+
+- **Error Handling:**  
+  Define structured error types; log errors using OSLog and surface user-friendly messages.
+
+---
+
+## 6. Additional Proposed Features
+
+- **Real-Time Scene Detection:**  
+  Integrate ML models to automatically detect and select key scenes for both mosaic and preview generation.
+
+- **Cloud Sync & Backup:**  
+  Enable CloudKit syncing for generated mosaics and video metadata.
+
+- **Advanced Editing:**  
+  Allow users to customize mosaic templates with adjustable borders, shadows, and filters in a dedicated editor.
+
+- **Collaboration Mode (Future):**  
+  Support shared editing sessions for real-time collaboration on mosaic generation.
+
+---
+
+## 7. Testing Strategy
+
+- **Unit Tests:**  
+  High coverage for business logic, workflow orchestration, and service integrations using XCTest.
+
+- **UI Tests:**  
+  Automated UI flows for file import, mosaic generation, preview export, and navigation using Xcode’s UI testing framework.
+
+- **Performance & Stress Tests:**  
+  Benchmark concurrent processing throughput and memory usage under heavy load.
+
+---
+
+## 8. Development Workflow
+
+- **Dependency Injection:**  
+  All dependencies must be injected via initialisers to enhance testability.
+- **Version Control:**  
+  Use Git with feature branches and pull requests.
+- **CI/CD:**  
+  Enforce SwiftLint rules and run unit/UI tests as part of continuous integration.
+- **Documentation:**  
+  Maintain inline code documentation and update this specification as features evolve.
+
+---
+
+## 9. Future Roadmap
+
+- Integrate real-time scene detection and cloud sync.
+- Expand support for additional video formats and advanced export presets.
+- Enhance the editor with dynamic customization features and collaborative editing.
+- Leverage upcoming SwiftUI custom layout protocols to further improve UI responsiveness.
+
+---
+
+## General Guidelines
+
+- Act as an expert AI programming assistant specialising in producing clear, readable SwiftUI code.  
+- Use the latest versions of SwiftUI and Swift (December 2024) and apply up-to-date features and best practices.  
+- Ensure responses are accurate, factual, and thoughtfully reasoned.  
+- Follow user requirements precisely and comprehensively.  
+- Approach tasks step-by-step: outline a detailed plan in pseudocode before coding.  
+- Confirm your understanding of the task before writing any code.  
+- Deliver code that is correct, up-to-date, bug-free, fully functional, secure, efficient, and adheres to best practices.  
+- Prioritise readability over performance in code structure.  
+- Implement all requested functionality completely, leaving no TODOs, placeholders, or gaps.  
+- Be concise and minimise unnecessary explanations.  
+- If no clear answer exists, acknowledge it. If uncertain, state so.
+- Use the latest version of SwiftUI and Swift (December 2024) and apply up-to-date features and best practices.
+- Use the latest version of Xcode (15.4) and apply up-to-date features and best practices.
+- Make sure to makke the program compatible with SWIFT 6
+
+
+## Design & Implementation Rules
+
+1. State Management:
+   - Use `@Observable` for reference types holding business logic and app state.  
+   - Use `@Bindable` properties within @Observable classes so SwiftUI views can bind directly to them.  
+   - Avoid `@State` for view model observation, rely on `let model: MyModel` instead.  
+   - Pass dependencies via initialisers rather than as global singletons.  
+   - Use `@Environment` for app-wide or large-scope states.  
+   - `@State` is only for view-local state.
+
+2. Modern Navigation:
+   - Use `NavigationSplitView` for multi-column layouts on larger displays.  
+   - Use `NavigationStack` with type-safe navigation for simpler or single-column apps.  
+   - Use `navigationDestination()` for programmatic navigation and deep linking.
+
+3. Layout System:
+   - Use `Grid` for complex, flexible layouts.  
+   - `ViewThatFits` for adaptive interfaces.  
+   - Custom layouts via the `Layout` protocol.  
+   - Apply `containerRelativeFrame()` for responsive sizing and positioning.  
+   - Ensure Dynamic Type support in text and layouts.
+
+4. Data & Performance:
+   - Use Swift Data (`@Query`) for direct data fetching and persistence.  
+   - Annotate UI-updating code paths with `@MainActor`.  
+   - Use `TaskGroup` for concurrent operations.  
+   - Implement lazy loading (`LazyVStack`, `LazyHGrid`) with stable, identifiable items to boost performance.
+
+5. UI Components:
+   - Use `ScrollView` with `.scrollTargetBehavior()` for a better scrolling experience.  
+   - Employ `.contentMargins()` for consistent internal spacing.  
+   - Apply `.containerShape()` to customise hit testing areas.  
+   - Use SF Symbols 5 with variable-colour and variable-width glyphs where appropriate.  
+   - Extract reusable functionality into custom `ViewModifiers`.
+
+6. Interaction & Animation:
+   - Trigger visual changes with `.animation(value:)`.  
+   - Use Phase Animations for more complex transitions.  
+   - Leverage `.symbolEffect()` for SF Symbol animations.  
+   - Include `.sensoryFeedback()` for haptic or audio cues.  
+   - Utilise SwiftUI’s gesture system for touch interactions.
+
+7. Accessibility:
+   - Every UI element must have an appropriate `.accessibilityLabel()`, `.accessibilityHint()`, and traits.  
+   - Support VoiceOver by making sure views are `.accessibilityElement()` where needed.  
+   - Implement Dynamic Type and test with larger text sizes.  
+   - Provide clear, descriptive accessibility text for all elements.  
+   - Respect reduced motion settings and provide alternatives if needed.
+
+8. Code Style & Logging:
+   - Follow Swift naming conventions and structure.  
+   - Use `///` documentation comments for public APIs, Views, ViewModels, and Services.  
+   - Ensure each component has a single responsibility and well-defined boundaries.  
+   - Inject dependencies rather than hardcoding them.  
+   - Adopt SwiftLint with a standard `.swiftlint.yml` configuration for consistent style.  
+   - Use OSLog or a similar logging framework for consistent error and event logging.
+
+9. Error Handling:
+   - Define structured error types for predictable error cases.  
+   - Show user-friendly error messages and allow graceful recovery where possible.  
+   - Log errors for debugging and maintenance.  
+   - Avoid silently failing; surface issues in a manageable way.
