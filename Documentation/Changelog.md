@@ -120,6 +120,12 @@
   - Visual feedback during preview generation
   - Error handling and user notifications
   - Preview player with close button to return to original video
+- Created comprehensive `.gitignore` file to exclude unnecessary files from version control
+  - Added macOS system files
+  - Added Xcode-specific files
+  - Added dependency management files
+  - Added IDE-specific files
+  - Added project-specific exclusions (@Othersources/)
 
 ### Changed
 - Updated test configurations to include environment variables
